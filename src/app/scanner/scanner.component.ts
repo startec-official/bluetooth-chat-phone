@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { i18nMetaToJSDoc } from '@angular/compiler/src/render3/view/i18n/meta';
+import { Component, OnInit, Output } from '@angular/core';
 import { BarcodeScanner, BarcodeScanResult } from '@ionic-native/barcode-scanner/ngx';
+import { BehaviorSubject } from 'rxjs';
 import { UiService } from '../utils/ui.service';
 
 @Component({
@@ -8,10 +10,12 @@ import { UiService } from '../utils/ui.service';
   styleUrls: ['./scanner.component.scss'],
 })
 export class ScannerComponent implements OnInit {
+  @Output('qr-data') qrData: BehaviorSubject<string> = new BehaviorSubject('');
 
   constructor(private barcodeScanner: BarcodeScanner, private uiService: UiService) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   scanQrCode(): void {
     this.barcodeScanner.scan({
@@ -29,7 +33,7 @@ export class ScannerComponent implements OnInit {
   }
 
   onQRCodeRead(barcodeData: string) {
-
+    this.qrData.next(barcodeData);
   }
 
 }
