@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 
-import { from } from "rxjs";
+import { from, Observable } from "rxjs";
+import { catchError, concatMap } from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +11,17 @@ import { from } from "rxjs";
 export class BluetoothSerialService {
   constructor(private bluetoothSerial: BluetoothSerial) { }
 
+  activateBluetooth(macAddress: string): Observable<any> {
+    return this.enableBluetooth().pipe(
+      concatMap(_ => this.bluetoothConnect(macAddress)),
+      catchError(err => {
+        throw `BluetoothConnectError: ${JSON.stringify(err)}`;
+      })
+    );
+  }
+
   bluetoothConnect(macAddress: string) {
-    this.bluetoothSerial.connect(macAddress).subscribe(_ => {
-      console.log('connect success!');
-    }, error => {
-      console.log('ConnectError: ' + JSON.stringify(error));
-    });
+    return this.bluetoothSerial.connect(macAddress);
   }
 
   getBondedDevices() {

@@ -10,8 +10,13 @@ export class HomePage {
   
   constructor(private btSerial: BluetoothSerialService) {}
 
-  connect() {
-    this.btSerial.bluetoothConnect('B8:27:EB:3C:63:B4');
+  activateBluetooth() {
+    this.btSerial.activateBluetooth('B8:27:EB:3C:63:B4').subscribe(_ => {
+      console.log('connected to bluetooth!');
+    },
+    error => {
+      console.log(`activate bluetooth encountered an error: ${error}`);
+    });
   }
 
   writeString() {
