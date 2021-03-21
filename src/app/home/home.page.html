@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Send Data
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,12 +9,18 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title size="large">Send Data</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <div id="container">
-    <ion-button (click)="connect()">Connect to Bluetooth</ion-button>
-    <ion-button (click)="writeString()">Write Hello world</ion-button>
+    <ion-item style="margin-left: 1em; margin-right: 1em; margin-bottom: 5em;">
+      <ion-label position="stacked">Message Send</ion-label>
+      <ion-input [(ngModel)]="sendData"></ion-input>
+    </ion-item>
+    <ion-button ion-icon-button (click)="writeString()">
+      <ion-icon name="send-outline"></ion-icon>
+      Send
+    </ion-button>
   </div>
 </ion-content>

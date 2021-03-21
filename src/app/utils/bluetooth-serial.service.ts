@@ -40,13 +40,11 @@ export class BluetoothSerialService {
     return from(this.bluetoothSerial.enable());
   }
 
-  writeString() {
-    // Write a string
-    from(this.bluetoothSerial.write('hello world')).subscribe(_ => {
-      console.log('write success!');
-    },
-      error => {
-        console.log('WriteError: ' + JSON.stringify(error));
-      });
+  writeString(inputString: string): Observable<any> {
+    return from(this.bluetoothSerial.write(inputString)).pipe(
+      catchError(err => {
+        throw `WriteStringError: ${JSON.stringify(err)}`;
+      })
+    );
   }
 }

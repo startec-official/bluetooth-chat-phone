@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BluetoothSerialService } from '../utils/bluetooth-serial.service';
 
 @Component({
@@ -6,9 +6,16 @@ import { BluetoothSerialService } from '../utils/bluetooth-serial.service';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
-  
+export class HomePage implements OnInit {
+
+  sendData: string;
+
   constructor(private btSerial: BluetoothSerialService) {}
+  
+  ngOnInit(): void {
+    this.sendData = "";
+    this.activateBluetooth();
+  }
 
   activateBluetooth() {
     this.btSerial.activateBluetooth('B8:27:EB:3C:63:B4').subscribe(_ => {
@@ -20,6 +27,10 @@ export class HomePage {
   }
 
   writeString() {
-    this.btSerial.writeString();
+    this.btSerial.writeString(this.sendData).subscribe(_ => {
+      console.log('message sent');
+    }, error => {
+      console.log(`sending message encountered an error: ${error}`);
+    });
   }
 }
