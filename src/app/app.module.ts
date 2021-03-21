@@ -9,11 +9,20 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
-  providers: [BluetoothSerial, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [
+    BluetoothSerial,
+    BarcodeScanner,
+    {
+      provide: RouteReuseStrategy,
+      useClass: IonicRouteStrategy
+    }
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
