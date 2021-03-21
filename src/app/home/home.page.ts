@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { BluetoothSerialService } from '../utils/bluetooth-serial.service';
 
 @Component({
   selector: 'app-home',
@@ -6,7 +7,14 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  
+  constructor(private btSerial: BluetoothSerialService) {}
 
-  constructor() {}
+  connect() {
+    this.btSerial.bluetoothConnect('B8:27:EB:3C:63:B4');
+  }
 
+  writeString() {
+    this.btSerial.writeString();
+  }
 }
