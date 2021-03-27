@@ -14,6 +14,9 @@
   </ion-header>
 
   <div id="container">
+    <ion-button ion-icon-button (click)="activateBluetooth()">
+      Connect
+    </ion-button>
     <ion-item style="margin-left: 1em; margin-right: 1em; margin-bottom: 5em;">
       <ion-label position="stacked">Message Send</ion-label>
       <ion-input [(ngModel)]="sendData"></ion-input>
