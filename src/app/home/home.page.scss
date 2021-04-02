@@ -25,3 +25,25 @@
 #container a {
   text-decoration: none;
 }
+
+.bubble {
+  padding: 1em;
+  background-color: #ccc;
+  border-radius: 1em;
+  margin-top: 1em;
+  width: fit-content;
+}
+
+.self {
+  background-color: blue;
+  color: white;
+  margin-left: auto;
+}
+
+.chat-area {
+  position: relative;
+  margin-top: 2em;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+

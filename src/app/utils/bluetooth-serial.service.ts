@@ -20,6 +20,10 @@ export class BluetoothSerialService {
     );
   }
 
+  getDataListener(delimiter: string) {
+    return this.bluetoothSerial.subscribe(delimiter);
+  }
+
   bluetoothConnect(macAddress: string) {
     return this.bluetoothSerial.connect(macAddress);
   }

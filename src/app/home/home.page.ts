@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { BluetoothSerialService } from '../utils/bluetooth-serial.service';
 import { UiService } from '../utils/ui.service';
 
@@ -10,29 +10,45 @@ import { UiService } from '../utils/ui.service';
 export class HomePage implements OnInit {
 
   sendData: string;
+  public messages: { msg: string, self: boolean }[];
 
-  constructor(private btSerial: BluetoothSerialService, private uiService: UiService) {}
-  
+  constructor(private btSerial: BluetoothSerialService, private uiService: UiService, private ref: ChangeDetectorRef) { }
+
   ngOnInit(): void {
     this.sendData = "";
+    this.messages = [
+      { msg: 'hello there', self: false },
+      { msg: 'oh hi', self: true }
+    ];
+  }
+
+  addMessage(newMessage: string, _self?: boolean) {
+    if (!!_self)
+      _self = true;
+    this.messages.push({ msg: newMessage, self: _self });
   }
 
   activateBluetooth() {
-    this.btSerial.activateBluetooth('B8:27:EB:3C:63:B4').subscribe(_ => {
-      console.log('connected to bluetooth!');
+    this.btSerial.activateBluetooth('DC:A6:32:69:90:FE').subscribe(_ => {
       this.uiService.presentToast('connected to Raspberry Pi!', 500);
+
+      // listen to incoming data, parse data once the newline character is encountered
+      this.btSerial.getDataListener('\n').subscribe(data => {
+        console.log(`RAW RCVD: ${data}`);
+        this.addMessage(data, false);
+        this.ref.detectChanges();
+      });
     },
-    error => {
-      console.log(`activate bluetooth encountered an error: ${error}`);
-      this.uiService.presentToast(`activate bluetooth encountered an error: ${error}`,1000);
-    });
+      error => {
+        this.uiService.presentToast(`activate bluetooth encountered an error: ${error}`, 1000);
+      });
   }
 
   writeString() {
     this.btSerial.writeString(this.sendData).subscribe(_ => {
-      console.log('message sent');
+      this.addMessage(this.sendData, true);
     }, error => {
-      console.log(`sending message encountered an error: ${error}`);
+      this.uiService.presentToast(`sending message encountered an error: ${error}`, 500);
     });
   }
 }

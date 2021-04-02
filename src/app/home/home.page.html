@@ -1,8 +1,17 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Send Data
-    </ion-title>
+    <ion-buttons slot="start">
+      <ion-button>
+        <ion-icon name="heart"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button color="primary" (click)="activateBluetooth()">
+        <ion-icon name="bluetooth-outline"></ion-icon>
+        Pair
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Raspberry Pi</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -13,17 +22,20 @@
     </ion-toolbar>
   </ion-header>
 
-  <div id="container">
-    <ion-button ion-icon-button (click)="activateBluetooth()">
-      Connect
-    </ion-button>
-    <ion-item style="margin-left: 1em; margin-right: 1em; margin-bottom: 5em;">
-      <ion-label position="stacked">Message Send</ion-label>
-      <ion-input [(ngModel)]="sendData"></ion-input>
-    </ion-item>
-    <ion-button ion-icon-button (click)="writeString()">
-      <ion-icon name="send-outline"></ion-icon>
-      Send
-    </ion-button>
+  <div class="chat-area">
+    <div class="bubble" *ngFor="let chatMsg of messages" [ngClass]="{'self': chatMsg.self}">{{chatMsg.msg}}</div>
   </div>
 </ion-content>
+
+<ion-footer no-border>
+  <ion-toolbar style="padding: 0 1em 0.5em 1em;">
+    <ion-item>
+      <ion-input style="width: 100%;" [(ngModel)]="sendData"></ion-input>
+    </ion-item>
+    <ion-buttons slot="end">
+      <ion-button ion-icon-button color="primary" (click)="writeString()">
+        <ion-icon name="send-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
