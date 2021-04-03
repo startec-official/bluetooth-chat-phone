@@ -16,10 +16,7 @@ export class HomePage implements OnInit {
 
   ngOnInit(): void {
     this.sendData = "";
-    this.messages = [
-      { msg: 'hello there', self: false },
-      { msg: 'oh hi', self: true }
-    ];
+    this.messages = [];
   }
 
   addMessage(newMessage: string, _self?: boolean) {
@@ -31,12 +28,10 @@ export class HomePage implements OnInit {
   activateBluetooth() {
     this.btSerial.activateBluetooth('DC:A6:32:69:90:FE').subscribe(_ => {
       this.uiService.presentToast('connected to Raspberry Pi!', 500);
-
       // listen to incoming data, parse data once the newline character is encountered
       this.btSerial.getDataListener('\n').subscribe(data => {
-        console.log(`RAW RCVD: ${data}`);
         this.addMessage(data, false);
-        this.ref.detectChanges();
+        this.ref.detectChanges(); // force the system to detect data changes
       });
     },
       error => {
